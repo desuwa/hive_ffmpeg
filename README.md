@@ -1,4 +1,32 @@
-# muh webm thumbnails
+## Ruby bindings to FFmpeg
+
+Mostly for thumbnailing.
+
+### Installation
+
+FFmpeg/libav is required.
+`libjpeg` and `libpng` are optional and only needed for frame extraction.
+
+Debian/Ubuntu:
+```
+sudo apt-get install libavformat-dev libswscale-dev libjpeg-dev
+```
+On other systems, installing `ffmpeg` and `libjpeg` packages should be enough.
+
+Clone the repo, build the gem and install it:
+
+```
+gem build hive_ffmpeg.gemspec
+gem install hive_ffmpeg-x.y.z.gem
+```
+You might need to provide the path to FFmpeg libs and headers on FreeBSD:
+```
+gem install hive_ffmpeg-x.y.z.gem -- --with-ffmpeg-dir=/usr/local
+```
+To build with libpng: `--with-png`  
+To build without libjpeg: `--without-jpeg`
+
+### Usage
 
 ```ruby
 require 'hive_ffmpeg'
