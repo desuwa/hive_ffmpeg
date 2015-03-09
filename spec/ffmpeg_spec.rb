@@ -90,7 +90,7 @@ class FFmpegSpec < MiniTest::Spec
     end
 
     describe '#save_frame' do
-      it 'saves a frame and returns the result image dimensions' do
+      it 'saves a frame and returns the resulting image dimensions' do
         cleanup_tmp_dir
         width, height = @@ff.save_frame("#{TMP_DIR}/frame.jpg")
         assert width == 128 && height == 128
