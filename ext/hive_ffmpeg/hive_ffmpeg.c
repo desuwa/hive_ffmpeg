@@ -256,17 +256,6 @@ static VALUE ff_get_stream_info(AVStream *stream) {
   return hash;
 }
 
-static void ff_open(char *path, AVFormatContext *ctx) {
-  if (avformat_open_input(&ctx, path, NULL, NULL) != 0) {
-    rb_raise(rb_eRuntimeError, "FFmpeg - can't open file");
-  }
-
-  if (avformat_find_stream_info(ctx, NULL) < 0) {
-    avformat_close_input(&ctx);
-    rb_raise(rb_eRuntimeError, "FFmpeg - couldn't get stream info");
-  }
-}
-
 static VALUE rb_ff_nb_streams(VALUE self) {
   ff_state *state;
   Data_Get_Struct(self, ff_state, state);
@@ -651,6 +640,9 @@ static VALUE rb_ff_save_frame(int argc, VALUE *argv, VALUE self) {
 #endif
 
 static void ff_free(ff_state *state) {
+  if (state->ctx != NULL) {
+    avformat_close_input(&state->ctx);
+  }
   free(state->path);
   free(state);
 }
@@ -676,7 +668,16 @@ static VALUE rb_ff_init(VALUE self, VALUE file_arg) {
 
   path = StringValueCStr(file_arg);
 
-  ff_open(path, state->ctx);
+  if (avformat_open_input(&state->ctx, path, NULL, NULL) != 0) {
+    state->ctx = NULL;
+    rb_raise(rb_eRuntimeError, "FFmpeg - can't open file");
+  }
+
+  if (avformat_find_stream_info(state->ctx, NULL) < 0) {
+    avformat_close_input(&state->ctx);
+    state->ctx = NULL;
+    rb_raise(rb_eRuntimeError, "FFmpeg - couldn't get stream info");
+  }
 
   state->path = (char*)malloc(strlen(path) + 1);
   strcpy(state->path, path);
