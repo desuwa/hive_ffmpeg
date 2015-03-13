@@ -228,6 +228,11 @@ static VALUE ff_get_codec_name(enum AVCodecID id) {
 
 static VALUE ff_get_stream_info(AVStream *stream) {
   VALUE hash = rb_hash_new();
+  
+  rb_hash_aset(hash,
+    STR2SYM("index"),
+    INT2FIX(stream->index)
+  );
 
   rb_hash_aset(hash,
     STR2SYM("type"),

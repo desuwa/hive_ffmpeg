@@ -54,6 +54,7 @@ class FFmpegSpec < MiniTest::Spec
       assert [
         :video, :audio, :data, :subtitle, :attachment, nil
       ].include?(video[:type])
+      assert_equal 0, video[:index]
       assert_equal :video, video[:type]
       assert_equal 'vp8', video[:codec]
       assert_equal 128, video[:width]
