@@ -257,7 +257,51 @@ static VALUE ff_get_stream_info(AVStream *stream) {
       )
     );
   }
+  
+  return hash;
+}
 
+static VALUE rb_ff_packet(VALUE self, VALUE sec_arg) {
+  int64_t ts;
+  VALUE hash;
+  AVPacket packet;
+  
+  ff_state *state;
+  Data_Get_Struct(self, ff_state, state);
+
+  ff_check_closed(state);  
+  
+  Check_Type(sec_arg, T_FLOAT);
+  
+  ts = (int64_t)(NUM2DBL(sec_arg) * AV_TIME_BASE);
+  
+  if (avformat_seek_file(state->ctx, -1, INT64_MIN, ts, INT64_MAX, 0) < 0) {
+    return Qnil;
+  }
+  
+  if (av_read_frame(state->ctx, &packet) < 0) {
+    return Qnil;
+  }
+  
+  hash = rb_hash_new();
+  
+  rb_hash_aset(hash,
+    STR2SYM("stream_index"),
+    INT2FIX(packet.stream_index)
+  );
+  
+  rb_hash_aset(hash,
+    STR2SYM("pos"),
+    LL2NUM(packet.pos)
+  );
+  
+  rb_hash_aset(hash,
+    STR2SYM("size"),
+    INT2FIX(packet.size)
+  );
+  
+  av_free_packet(&packet);
+  
   return hash;
 }
 
@@ -742,6 +786,7 @@ void Init_hive_ffmpeg() {
   rb_define_method(rb_cFFmpeg, "nb_streams", rb_ff_nb_streams, 0);
   rb_define_method(rb_cFFmpeg, "streams", rb_ff_streams, 0);
   rb_define_method(rb_cFFmpeg, "duration", rb_ff_duration, 0);
+  rb_define_method(rb_cFFmpeg, "packet", rb_ff_packet, 1);
 
 #if defined(HAVE_JPEGLIB_H) || defined(HAVE_PNG_H)
   rb_define_method(rb_cFFmpeg, "save_frame", rb_ff_save_frame, -1);

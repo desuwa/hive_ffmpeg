@@ -73,6 +73,14 @@ class FFmpegSpec < MiniTest::Spec
     it 'returns the path of the input file' do
       assert_equal TEST_FILE, @@ff.path
     end
+    
+    it 'returns packet information' do
+      packet = @@ff.packet(@@ff.duration)
+      assert_instance_of(Hash, packet)
+      assert_equal 0, packet[:stream_index]
+      assert_equal 448, packet[:pos]
+      assert_equal 347, packet[:size]
+    end
 
     describe '#close, #closed?' do
       it 'closes the input file and frees the format context' do
