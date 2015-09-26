@@ -579,7 +579,7 @@ static VALUE rb_ff_save_frame(int argc, VALUE *argv, VALUE self) {
     goto cleanup;
   }
 
-  frame_rgb->format = PIX_FMT_RGB24;
+  frame_rgb->format = AV_PIX_FMT_RGB24;
   frame->width = out_width;
   frame->height = out_height;
 
@@ -588,7 +588,7 @@ static VALUE rb_ff_save_frame(int argc, VALUE *argv, VALUE self) {
     frame_rgb->linesize,
     out_width,
     out_height,
-    PIX_FMT_RGB24,
+    AV_PIX_FMT_RGB24,
     16
   ) < 0) {
     error = "FFmpeg - av_image_alloc failed";
@@ -601,7 +601,7 @@ static VALUE rb_ff_save_frame(int argc, VALUE *argv, VALUE self) {
     codec_ctx->pix_fmt,
     out_width,
     out_height,
-    PIX_FMT_RGB24,
+    AV_PIX_FMT_RGB24,
     SWS_BILINEAR,
     NULL,
     NULL,
