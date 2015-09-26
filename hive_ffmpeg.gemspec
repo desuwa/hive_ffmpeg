@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'hive_ffmpeg'
-  s.version = '0.0.1'
+  s.version = '0.0.2'
   s.summary = 'FFmpeg Ruby bindings'
   s.author = 'Maxime Youdine'
   s.license = 'MIT'
