@@ -11,6 +11,8 @@ Debian/Ubuntu:
 ```
 sudo apt-get install libavformat-dev libswscale-dev libjpeg-dev
 ```
+Recent versions of Ubuntu have `libavformat-ffmpeg-dev` and `libswscale-ffmpeg-dev`
+
 On other systems, installing `ffmpeg` and `libjpeg` packages should be enough.
 
 Clone the repo, build the gem and install it:
