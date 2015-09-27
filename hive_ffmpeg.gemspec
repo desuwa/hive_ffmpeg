@@ -8,10 +8,8 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9.3'
   s.files = %w[
     hive_ffmpeg.gemspec
-    lib/hive_ffmpeg/hive_ffmpeg.rb
     ext/hive_ffmpeg/extconf.rb
     ext/hive_ffmpeg/hive_ffmpeg.c
   ]
   s.extensions = ['ext/hive_ffmpeg/extconf.rb']
-  s.require_paths = ['lib']
 end
