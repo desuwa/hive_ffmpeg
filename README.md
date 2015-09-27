@@ -1,10 +1,10 @@
 ## Ruby bindings to FFmpeg
 
-Mostly for thumbnailing.
+Mostly for video thumbnailing and stream info extraction.
 
 ### Installation
 
-FFmpeg/libav is required.
+Recent FFmpeg/libav is required.
 `libjpeg` and `libpng` are optional and only needed for frame extraction.
 
 Debian/Ubuntu:
@@ -34,21 +34,22 @@ To build without libjpeg: `--without-jpeg`
 require 'hive_ffmpeg'
 
 ff = Hive::FFmpeg.open('video.webm') do |ff|
-  ff.format
+  puts ff.format
   # matroska,webm
-  ff.duration
+  puts ff.duration
   # 0.979
-  ff.nb_streams
+  puts ff.nb_streams
   # 1
-  ff.streams
+  puts ff.streams
   # [ { :type=>:video, :codec=>"vp8", :width=>1280, :height=>720, :sar=>(1/1) } ]
-  ff.save_frame('frame.jpg', quality: 75, max_size: 250, offset: 50)
+  puts ff.save_frame('frame.jpg', quality: 75, max_size: 250, offset: 50)
   # [ 250, 140 ]
   ff
 end
 
-ff.closed?
+puts ff.closed?
 # true
-ff.path
+puts ff.path
 # video.webm
 ```
+See `spec/ffmpeg_spec.rb` for a slightly more thorough description.
